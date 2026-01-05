@@ -5,5 +5,67 @@
     "packageManager": "npm"
   },
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "Bunnoon": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/www",
+      "sourceRoot": "projects/www/src",
+      "prefix": "bnd",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/www/src/main.ts",
+            "tsConfig": "projects/www/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/www/public"
+              }
+            ],
+            "styles": ["projects/www/src/styles.css"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "Bunnoon:build:production"
+            },
+            "development": {
+              "buildTarget": "Bunnoon:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    }
+  }
 }
